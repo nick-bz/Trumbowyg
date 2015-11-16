@@ -383,6 +383,7 @@ jQuery.trumbowyg = {
                     },
                     width: {
                         label: t.lang.width,
+                        type: 'number',
                         value: $img.attr('width')
                     }
                 }, function(v){
@@ -963,6 +964,7 @@ jQuery.trumbowyg = {
                     value: t.getSelectedText()
                 },
                 width: {
+                    type: 'number',
                     label: t.lang.width
                 }
             }, function(v){ // v are values
