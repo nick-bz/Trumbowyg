@@ -976,9 +976,7 @@ jQuery.trumbowyg = {
                     link.attr('title',v.title);
                 if (v.target.length > 0)
                     link.attr('target',v.target);
-                if(!hasImg) {
-                    t.selection.deleteContents();
-                }
+                t.selection.deleteContents();
                 t.selection.insertNode(link.get(0));
                 t.restoreSelection();
                 return true;
