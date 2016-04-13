@@ -924,6 +924,19 @@ jQuery.trumbowyg = {
         createLink: function(){
             var t = this;
             t.saveSelection();
+
+            var hasImg = false;
+            var selectedNodes = [];
+            if(t.selection.commonAncestorContainer && t.selection.commonAncestorContainer.getElementsByTagName) {
+                var allWithinRangeParent = t.selection.commonAncestorContainer.getElementsByTagName("*");
+                for (var i = 0, selEl; selEl = allWithinRangeParent[i]; i++) {
+                    if (selEl.nodeName == 'IMG') {
+                        hasImg = true;
+                    }
+                    selectedNodes.push(selEl.outerHTML);
+                }
+            }
+
             t.openModalInsert(t.lang.createLink, {
                 url: {
                     label: 'URL',
@@ -940,12 +953,21 @@ jQuery.trumbowyg = {
                     label: t.lang.target
                 }
             }, function(v){ // v is value
-                var link = $(['<a href="', v.url, '">', v.text, '</a>'].join(''));
+                var link = ['<a href="', v.url, '">'];
+                if(hasImg) {
+                    link.push(selectedNodes.join(''));
+                } else {
+                    link.push(v.text);
+                }
+                link.push('</a>');
+                link = $(link.join(''));
                 if (v.title.length > 0)
                     link.attr('title',v.title);
                 if (v.target.length > 0)
                     link.attr('target',v.target);
-                t.selection.deleteContents();
+                if(!hasImg) {
+                    t.selection.deleteContents();
+                }
                 t.selection.insertNode(link.get(0));
                 t.restoreSelection();
                 return true;
