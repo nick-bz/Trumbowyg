@@ -343,6 +343,24 @@ jQuery.trumbowyg = {
                 .html(html)
             ;
 
+            t.$codeMirror = null;
+            if (t.o.btns.indexOf('viewHTML') != -1 && typeof(CodeMirror) == 'function') {
+                t.$codeMirror = CodeMirror.fromTextArea(t.$ta[0], {
+                    lineNumbers: true,
+                    theme: 'default',
+                    mode: 'htmlmixed',
+                    styleActiveLine: true,
+                    matchBrackets: true
+                });
+                t.$codeMirrorEl = $('.CodeMirror', t.$box);
+                t.$codeMirrorEl.hide();
+                t.$codeMirror.on('change', function (inst, changeObj) {
+                    // console.log('myCodeMirror change', inst.doc.getValue());
+                    t.$ta.val(inst.doc.getValue());
+                    t.$c.trigger('tbwchange');
+                });
+            }
+
             if(t.o.tabindex){
                 t.$ed.attr('tabindex', t.o.tabindex);
             }
@@ -780,10 +798,18 @@ jQuery.trumbowyg = {
             t.$box.toggleClass(prefix + 'editor-hidden ' + prefix + 'editor-visible');
             t.$btnPane.toggleClass(prefix + 'disable');
             $('.'+prefix + 'viewHTML-button', t.$btnPane).toggleClass(prefix + 'active');
-            if(t.$box.hasClass(prefix + 'editor-visible'))
+            if (t.$box.hasClass(prefix + 'editor-visible')) {
+                if (t.$codeMirror) {
+                    t.$codeMirrorEl.hide();
+                }
                 t.$ta.attr('tabindex', -1);
-            else
+            } else {
+                if (t.$codeMirror) {
+                    t.$codeMirrorEl.show();
+                    t.$codeMirror.doc.setValue(t.$ed.html());
+                }
                 t.$ta.removeAttr('tabindex');
+            }
         },
 
         // Open dropdown when click on a button which open that
