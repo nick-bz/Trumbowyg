@@ -365,7 +365,7 @@ jQuery.trumbowyg = {
                 });
                 t.$codeMirrorEl = $('.CodeMirror', t.$box);
                 t.$codeMirrorEl.hide();
-                t.$codeMirror.on('change', function (inst, changeObj) {
+                t.$codeMirror.on('change', function (inst) {
                     // console.log('myCodeMirror change', inst.doc.getValue());
                     t.$ta.val(inst.doc.getValue());
                     t.$c.trigger('tbwchange');
@@ -553,7 +553,13 @@ jQuery.trumbowyg = {
                                 });
                             });
                             t.$btnPane.css('width', '100%');
+                            if (t.$codeMirror) {
+                                t.$codeMirrorEl.addClass('fullscreen');
+                            }
                         } else {
+                            if (t.$codeMirror) {
+                                t.$codeMirrorEl.removeClass('fullscreen');
+                            }
                             $('body').removeClass(prefix + 'body-fullscreen');
                             t.$box.removeAttr('style');
                             if(!t.o.autogrow)
