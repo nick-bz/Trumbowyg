@@ -344,7 +344,7 @@ jQuery.trumbowyg = {
             ;
 
             t.$codeMirror = null;
-            if (t.o.btns.indexOf('viewHTML') != -1 && typeof(CodeMirror) == 'function') {
+            if (t.o.btns.indexOf('viewHTML') != -1 && typeof(CodeMirror) == 'object') {
                 t.$codeMirror = CodeMirror.fromTextArea(t.$ta[0], {
                     lineNumbers: true,
                     theme: 'default',
