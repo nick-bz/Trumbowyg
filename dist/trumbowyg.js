@@ -346,7 +346,7 @@ jQuery.trumbowyg = {
             ;
 
             t.$ed
-                .addClass(prefix + 'editor')
+                .addClass(prefix + 'editor page-container')
                 .attr({
                     'contenteditable': true,
                     'dir': t.lang._dir || t.o.dir
