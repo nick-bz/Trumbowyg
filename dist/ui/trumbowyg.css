@@ -1,5 +1,5 @@
 /**
- * Trumbowyg v2.1.0 - A lightweight WYSIWYG editor
+ * Trumbowyg v2.1.2 - A lightweight WYSIWYG editor
  * Default stylesheet for Trumbowyg editor
  * ------------------------
  * @link http://alex-d.github.io/Trumbowyg
@@ -105,10 +105,12 @@
 
 .trumbowyg-button-pane {
   display: -webkit-box;
+  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-flow: row wrap;
-      flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
   width: 100%;
   min-height: 36px;
   background: #ecf0f1;
@@ -131,10 +133,12 @@
     background: #d7e0e2; }
   .trumbowyg-button-pane .trumbowyg-button-group {
     display: -webkit-box;
+    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-flow: row wrap;
-        flex-flow: row wrap; }
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap; }
     .trumbowyg-button-pane .trumbowyg-button-group .trumbowyg-fullscreen-button svg {
       color: transparent; }
     .trumbowyg-button-pane .trumbowyg-button-group:not(:empty) + .trumbowyg-button-group::before {
