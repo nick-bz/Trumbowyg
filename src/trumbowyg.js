@@ -392,6 +392,11 @@ jQuery.trumbowyg = {
                     alt: {
                         label: t.lang.description,
                         value: $img.attr('alt')
+                    },
+                    width: {
+                        label: t.lang.width,
+                        type: 'number',
+                        value: $img.attr('width')
                     }
                 }, function (v) {
                     if (v.src !== base64) {
@@ -400,7 +405,8 @@ jQuery.trumbowyg = {
                         });
                     }
                     $img.attr({
-                        alt: v.alt
+                        alt: v.alt,
+                        width: v.width
                     });
                     return true;
                 });
@@ -507,13 +513,31 @@ jQuery.trumbowyg = {
             ;
 
             t.$ed
-                .addClass(prefix + 'editor')
+                .addClass(prefix + 'editor page-container')
                 .attr({
                     contenteditable: true,
                     dir: t.lang._dir || 'ltr'
                 })
                 .html(html)
             ;
+
+            t.$codeMirror = null;
+            if (t.o.btns.indexOf('viewHTML') !== -1 && (typeof(CodeMirror) === 'function' || typeof(CodeMirror) === 'object')) {
+                t.$codeMirror = CodeMirror.fromTextArea(t.$ta[0], {
+                    lineNumbers: true,
+                    theme: 'default',
+                    mode: 'htmlmixed',
+                    styleActiveLine: true,
+                    matchBrackets: true
+                });
+                t.$codeMirrorEl = $('.CodeMirror', t.$box);
+                t.$codeMirrorEl.hide();
+                t.$codeMirror.on('change', function (inst) {
+                    // console.log('myCodeMirror change', inst.doc.getValue());
+                    t.$ta.val(inst.doc.getValue());
+                    t.$c.trigger('tbwchange');
+                });
+            }
 
             if (t.o.tabindex) {
                 t.$ed.attr('tabindex', t.o.tabindex);
@@ -922,8 +946,15 @@ jQuery.trumbowyg = {
                 t.$btnPane.toggleClass(prefix + 'disable');
                 $('.' + prefix + 'viewHTML-button', t.$btnPane).toggleClass(prefix + 'active');
                 if (t.$box.hasClass(prefix + 'editor-visible')) {
+                    if (t.$codeMirror) {
+                        t.$codeMirrorEl.hide();
+                    }
                     t.$ta.attr('tabindex', -1);
                 } else {
+                    if (t.$codeMirror) {
+                        t.$codeMirrorEl.show();
+                        t.$codeMirror.doc.setValue(t.$ed.html());
+                    }
                     t.$ta.removeAttr('tabindex');
                 }
             }, 0);
@@ -1072,6 +1103,18 @@ jQuery.trumbowyg = {
                 title,
                 target;
 
+            var hasImg = false;
+            var selectedNodes = [];
+
+            if (documentSelection.focusNode && documentSelection.focusNode.childNodes) {
+                documentSelection.focusNode.childNodes.forEach(function(selEl){
+                    if (selEl.nodeName == 'IMG') {
+                        hasImg = true;
+                    }
+                    selectedNodes.push(selEl.outerHTML);
+                });
+            }
+
             while (['A', 'DIV'].indexOf(node.nodeName) < 0) {
                 node = node.parentNode;
             }
@@ -1107,7 +1150,14 @@ jQuery.trumbowyg = {
                     value: target
                 }
             }, function (v) { // v is value
-                var link = $(['<a href="', v.url, '">', v.text, '</a>'].join(''));
+                var link = ['<a href="', v.url, '">'];
+                if (hasImg) {
+                    link.push(selectedNodes.join(''));
+                } else {
+                    link.push(v.text);
+                }
+                link.push('</a>');
+                link = $(link.join(''));
                 if (v.title.length > 0) {
                     link.attr('title', v.title);
                 }
@@ -1166,6 +1216,10 @@ jQuery.trumbowyg = {
             $('body').toggleClass(prefix + 'body-fullscreen', isFullscreen);
             $(window).trigger('scroll');
             t.$c.trigger('tbw' + (isFullscreen ? 'open' : 'close') + 'fullscreen');
+
+            if (t.$codeMirror) {
+                t.$codeMirrorEl.toggleClass('fullscreen', isFullscreen);
+            }
         },
 
 
