@@ -7,60 +7,72 @@
  */
 
 
-(function($){
+(function ($) {
     'use strict';
-    
+
     $.extend(true, $.trumbowyg, {
         langs: {
+            // jshint camelcase:false
             en: {
-                preformatted: "Code sample <pre>",
+                preformatted: 'Code sample <pre>'
             },
             fr: {
-                preformatted: "Exemple de code",
+                preformatted: 'Exemple de code'
             },
             it: {
-                preformatted: "Codice <pre>",
+                preformatted: 'Codice <pre>'
+            },
+            zh_cn: {
+                preformatted: '代码示例 <pre>'
             }
         },
-        opts: {
-            btnsDef: {
-                preformatted: {
-                    func: function(params, tbw) {
-                        var text = String(tbw.doc.getSelection());
-                        if(text.replace(/\s/g, '') !== '') {
-                            try {
-                                var curtag = getSelectionParentElement().tagName.toLowerCase();
-                                if(curtag == "code" || curtag == "pre") {
-                                    return unwrapCode();
+        // jshint camelcase:true
+
+        plugins: {
+            preformatted: {
+                init: function (trumbowyg) {
+                    var btnDef = {
+                        fn: function () {
+                            trumbowyg.saveRange();
+                            var text = trumbowyg.getRangeText();
+                            if (text.replace(/\s/g, '') !== '') {
+                                try {
+                                    var curtag = getSelectionParentElement().tagName.toLowerCase();
+                                    if (curtag === 'code' || curtag === 'pre') {
+                                        return unwrapCode();
+                                    }
+                                    else {
+                                        trumbowyg.execCmd('insertHTML', '<pre><code>' + strip(text) + '</code></pre>');
+                                    }
+                                } catch (e) {
                                 }
-                                else {
-                                    tbw.execCmd('insertHTML', "<pre><code>"+ strip(text) +"</code></pre>");
-                                }
-                            } catch(e) { }
-                        }
-                    },
-                    ico: 'insertCode'
+                            }
+                        },
+                        tag: 'pre'
+                    };
+
+                    trumbowyg.addBtnDef('preformatted', btnDef);
                 }
             }
-        },
+        }
     });
-    
+
     /*
      * GetSelectionParentElement
-    */
+     */
     function getSelectionParentElement() {
-        var parentEl = null, 
-            sel;
+        var parentEl = null,
+            selection;
         if (window.getSelection) {
-            sel = window.getSelection();
-            if (sel.rangeCount) {
-                parentEl = sel.getRangeAt(0).commonAncestorContainer;
-                if (parentEl.nodeType != 1) {
+            selection = window.getSelection();
+            if (selection.rangeCount) {
+                parentEl = selection.getRangeAt(0).commonAncestorContainer;
+                if (parentEl.nodeType !== 1) {
                     parentEl = parentEl.parentNode;
                 }
             }
-        } else if ( (sel = document.selection) && sel.type != "Control") {
-            parentEl = sel.createRange().parentElement();
+        } else if ((selection = document.selection) && selection.type !== 'Control') {
+            parentEl = selection.createRange().parentElement();
         }
         return parentEl;
     }
@@ -68,38 +80,38 @@
     /*
      * Strip
      * returns a text without HTML tags
-    */
+     */
     function strip(html) {
-       var tmp = document.createElement("DIV");
-       tmp.innerHTML = html;
-       return tmp.textContent || tmp.innerText || "";
+        var tmp = document.createElement('DIV');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
     }
-    
+
     /*
      * UnwrapCode
      * ADD/FIX: to improve, works but can be better
-     * 'paranoic' solution
-    */
+     * "paranoic" solution
+     */
     function unwrapCode() {
         var container = null;
-        if (document.selection) //for IE
+        if (document.selection) { //for IE
             container = document.selection.createRange().parentElement();
-        else {
+        } else {
             var select = window.getSelection();
-            if (select.rangeCount > 0)
+            if (select.rangeCount > 0) {
                 container = select.getRangeAt(0).startContainer.parentNode;
+            }
         }
-        //"paranoic" unwrap
+        //'paranoic' unwrap
         var ispre = $(container).contents().closest('pre').length;
         var iscode = $(container).contents().closest('code').length;
-        if(ispre && iscode) {
+        if (ispre && iscode) {
             $(container).contents().unwrap('code').unwrap('pre');
-        } else if(ispre) {
+        } else if (ispre) {
             $(container).contents().unwrap('pre');
-        } else if(iscode) {
+        } else if (iscode) {
             $(container).contents().unwrap('code');
-        }  
+        }
     }
-
 
 })(jQuery);
