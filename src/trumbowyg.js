@@ -520,6 +520,9 @@ jQuery.trumbowyg = {
                 })
                 .html(html)
             ;
+            if(t.$box.width() >= 1200) {
+                t.$ed.addClass('bordered');
+            }
 
             t.$codeMirror = null;
             if (t.o.btns.indexOf('viewHTML') !== -1 && (typeof(CodeMirror) === 'function' || typeof(CodeMirror) === 'object')) {
