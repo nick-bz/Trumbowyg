@@ -323,7 +323,9 @@ jQuery.trumbowyg = {
                 fn: 'insertHorizontalRule'
             },
 
-            removeformat: {},
+            removeformat: {
+                fn: 'removeformat'
+            },
 
             fullscreen: {
                 class: 'trumbowyg-not-disable'
@@ -531,7 +533,7 @@ jQuery.trumbowyg = {
                 })
                 .html(html)
             ;
-            if(t.$box.width() >= 1200) {
+            if (t.$box.width() >= 1200) {
                 t.$ed.addClass('bordered');
             }
 
@@ -948,6 +950,17 @@ jQuery.trumbowyg = {
             this.syncCode(true);
         },
 
+        // remove formating for selected or all content
+        removeformat: function () {
+            var t = this;
+            t.saveRange();
+            t.syncCode(true);
+            t.$ed.find('*').each(function(){
+                this.removeAttribute('style');
+            });
+            t.restoreRange();
+            t.syncTextarea();
+        },
 
         // Function call when click on viewHTML button
         toggle: function () {
@@ -1120,8 +1133,8 @@ jQuery.trumbowyg = {
             var hasImg = false;
             var selectedNodes = [];
 
-            if (documentSelection.focusNode && documentSelection.focusNode.childNodes) {
-                documentSelection.focusNode.childNodes.forEach(function(selEl){
+            if (node && node.childNodes) {
+                node.childNodes.forEach(function (selEl) {
                     if (selEl.nodeName == 'IMG') {
                         hasImg = true;
                     }
