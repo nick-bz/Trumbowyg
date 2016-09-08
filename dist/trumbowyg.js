@@ -1133,7 +1133,7 @@ jQuery.trumbowyg = {
             var hasImg = false;
             var selectedNodes = [];
 
-            if (node && node.childNodes) {
+            if (node && node.childNodes && node.childNodes.length > 0) {
                 node.childNodes.forEach(function (selEl) {
                     if (selEl.nodeName == 'IMG') {
                         hasImg = true;
