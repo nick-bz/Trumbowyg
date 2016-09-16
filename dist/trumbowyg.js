@@ -957,6 +957,7 @@ jQuery.trumbowyg = {
             t.syncCode(true);
             t.$ed.find('*').each(function(){
                 this.removeAttribute('style');
+                this.removeAttribute('class');
             });
             t.restoreRange();
             t.syncTextarea();
@@ -1174,7 +1175,7 @@ jQuery.trumbowyg = {
                 },
                 target: {
                     label: t.lang.target,
-                    value: target
+                    value: target || '_blank'
                 }
             }, function (v) { // v is value
                 var link = ['<a href="', v.url, '">'];
