@@ -399,6 +399,11 @@ jQuery.trumbowyg = {
                         label: t.lang.width,
                         type: 'number',
                         value: $img.attr('width')
+                    },
+                    usePreview: {
+                        label: t.lang.usePreview,
+                        type: 'checkbox',
+                        checked: $img.is('[data-large-preview]')
                     }
                 }, function (v) {
                     if (v.src !== base64) {
@@ -408,7 +413,8 @@ jQuery.trumbowyg = {
                     }
                     $img.attr({
                         alt: v.alt,
-                        width: v.width
+                        width: v.width,
+                        'data-large-preview': v.usePreview
                     });
                     return true;
                 });
@@ -1372,9 +1378,10 @@ jQuery.trumbowyg = {
 
             $.each(fields, function (fieldName, field) {
                 var l = field.label,
-                    n = field.name || fieldName;
+                    n = field.name || fieldName,
+                    checked = field.checked ? ' checked="checked"' : '';
 
-                html += '<label><input type="' + (field.type || 'text') + '" name="' + n + '" value="' + (field.value || '').replace(/"/g, '&quot;') + '"><span class="' + prefix + 'input-infos"><span>' +
+                html += '<label><input type="' + (field.type || 'text') + '"'+checked+' name="' + n + '" value="' + (field.value || '').replace(/"/g, '&quot;') + '"><span class="' + prefix + 'input-infos"><span>' +
                     ((!l) ? (lg[fieldName] ? lg[fieldName] : fieldName) : (lg[l] ? lg[l] : l)) +
                     '</span></span></label>';
             });
