@@ -48,10 +48,11 @@
             return rgb.replace('#', '');
         } else if (rgb === 'rgba(0, 0, 0, 0)') {
             return 'transparent';
-        } else {
+        } else if(rgb != null) {
             rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
             return hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
         }
+        return false;
     }
 
     function colorTagHandler(element, trumbowyg) {
