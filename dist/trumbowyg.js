@@ -946,6 +946,7 @@ jQuery.trumbowyg = {
             });
             t.restoreRange();
             t.syncTextarea();
+            t.$c.trigger('tbwchange');
         },
 
         // Function call when click on viewHTML button
