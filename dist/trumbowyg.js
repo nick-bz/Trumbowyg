@@ -937,15 +937,29 @@ jQuery.trumbowyg = {
 
         // remove formating for selected or all content
         removeformat: function () {
-            var t = this;
+            var t = this,
+                documentSelection = t.doc.getSelection(),
+                node = documentSelection.focusNode;
+
             t.saveRange();
-            t.syncCode(true);
-            t.$ed.find('*').each(function(){
-                this.removeAttribute('style');
-                this.removeAttribute('class');
-            });
-            t.restoreRange();
-            t.syncTextarea();
+
+            if(!$(node).hasClass('trumbowyg-editor')) {
+                node.removeAttribute('style');
+                node.removeAttribute('class');
+                node.removeAttribute('size');
+                node.removeAttribute('face');
+            }
+
+            if (node.childNodes && node.childNodes.length > 0) {
+                node.childNodes.forEach(function (selEl) {
+                    console.log('selected', this);
+                    this.removeAttribute('style');
+                    this.removeAttribute('class');
+                    this.removeAttribute('size');
+                    this.removeAttribute('face');
+                });
+            }
+
             t.$c.trigger('tbwchange');
         },
 
