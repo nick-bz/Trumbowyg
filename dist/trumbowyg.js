@@ -411,6 +411,15 @@ jQuery.trumbowyg = {
                         type: 'number',
                         value: $img.attr('width')
                     },
+                    padding: {
+                        label: t.lang.padding,
+                        value: $img.css('padding')
+                    },
+                    align: {
+                        label: t.lang.align,
+                        html: t.buildImageAlignField(t, $img.attr('align')),
+                        value: $img.attr('align')
+                    },
                     usePreview: {
                         label: t.lang.usePreview,
                         type: 'checkbox',
@@ -425,8 +434,9 @@ jQuery.trumbowyg = {
                     $img.attr({
                         alt: v.alt,
                         width: v.width,
+                        align: v.align,
                         'data-large-preview': v.usePreview
-                    });
+                    }).css('padding', v.padding);
                     return true;
                 });
                 return false;
@@ -943,7 +953,7 @@ jQuery.trumbowyg = {
 
             t.saveRange();
 
-            if(!$(node).hasClass('trumbowyg-editor')) {
+            if (!$(node).hasClass('trumbowyg-editor')) {
                 node.removeAttribute('style');
                 node.removeAttribute('class');
                 node.removeAttribute('size');
@@ -1394,6 +1404,16 @@ jQuery.trumbowyg = {
 
             t.restoreRange();
         },
+        buildImageAlignField: function (t, align) {
+            align = align || 'left';
+            var html = [];
+            html.push('<select name="align">');
+            html.push('<option ' + (align == 'left' ? 'selected="selected"' : '') + ' value="left">' + t.lang.justifyLeft + '</option>');
+            html.push('<option ' + (align == 'right' ? 'selected="selected"' : '') + ' value="right">' + t.lang.justifyRight + '</option>');
+            html.push('</select>');
+
+            return html.join('');
+        },
         // Preformated build and management modal
         openModalInsert: function (title, fields, cmd) {
             var t = this,
@@ -1406,8 +1426,9 @@ jQuery.trumbowyg = {
                 var l = field.label,
                     n = field.name || fieldName,
                     checked = field.checked ? ' checked="checked"' : '';
+                field.html = field.html || '<input type="' + (field.type || 'text') + '"' + checked + ' name="' + n + '" value="' + (field.value || '').replace(/"/g, '&quot;') + '">';
 
-                html += '<label><input type="' + (field.type || 'text') + '"'+checked+' name="' + n + '" value="' + (field.value || '').replace(/"/g, '&quot;') + '"><span class="' + prefix + 'input-infos"><span>' +
+                html += '<label>' + field.html + '<span class="' + prefix + 'input-infos"><span>' +
                     ((!l) ? (lg[fieldName] ? lg[fieldName] : fieldName) : (lg[l] ? lg[l] : l)) +
                     '</span></span></label>';
             });
@@ -1419,7 +1440,7 @@ jQuery.trumbowyg = {
                         values = {};
 
                     $.each(fields, function (fieldName, field) {
-                        var $field = $('input[name="' + fieldName + '"]', $form);
+                        var $field = $('[name="' + fieldName + '"]', $form);
 
                         values[fieldName] = $.trim($field.val());
 
