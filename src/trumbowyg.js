@@ -1397,8 +1397,8 @@ jQuery.trumbowyg = {
             align = align || 'left';
             var html = [];
             html.push('<select name="align">');
-            html.push('<option ' + (align == 'left' ? 'selected="selected"' : '') + ' value="left">' + t.lang.justifyLeft + '</option>');
-            html.push('<option ' + (align == 'right' ? 'selected="selected"' : '') + ' value="right">' + t.lang.justifyRight + '</option>');
+            html.push('<option ' + (align == 'left' ? 'selected="selected"' : '') + ' value="left">' + t.lang.alignLeft + '</option>');
+            html.push('<option ' + (align == 'right' ? 'selected="selected"' : '') + ' value="right">' + t.lang.alignRight + '</option>');
             html.push('</select>');
 
             return html.join('');
