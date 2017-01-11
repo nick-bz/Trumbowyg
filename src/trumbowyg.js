@@ -420,10 +420,13 @@ jQuery.trumbowyg = {
                             src: v.src
                         });
                     }
-                    if(v.align == 'left' && v.padding == '0px 0px 10px 10px') {
+                    if(v.align == 'none') {
+                        v.padding = '0';
+                    }
+                    if(v.align == 'left' && (v.padding == '0px 0px 10px 10px' || v.padding == '0px' || v.padding == '0' || v.padding == '')) {
                         v.padding = '0px 10px 10px 0px';
                     }
-                    if(v.align == 'right' && v.padding == '0px 10px 10px 0px') {
+                    if(v.align == 'right' && (v.padding == '0px 10px 10px 0px' || v.padding == '0px' || v.padding == '0' || v.padding == '')) {
                         v.padding = '0px 0px 10px 10px';
                     }
                     $img.attr({
@@ -1400,9 +1403,10 @@ jQuery.trumbowyg = {
             t.restoreRange();
         },
         buildImageAlignField: function (t, align) {
-            align = align || 'left';
+            align = align || 'none';
             var html = [];
             html.push('<select name="align">');
+            html.push('<option ' + (align == 'none' ? 'selected="selected"' : '') + ' value="none">' + t.lang.alignNone + '</option>');
             html.push('<option ' + (align == 'left' ? 'selected="selected"' : '') + ' value="left">' + t.lang.alignLeft + '</option>');
             html.push('<option ' + (align == 'right' ? 'selected="selected"' : '') + ' value="right">' + t.lang.alignRight + '</option>');
             html.push('</select>');
