@@ -420,6 +420,12 @@ jQuery.trumbowyg = {
                             src: v.src
                         });
                     }
+                    if(v.align == 'left' && v.padding == '0px 0px 10px 10px') {
+                        v.padding = '0px 10px 10px 0px';
+                    }
+                    if(v.align == 'right' && v.padding == '0px 10px 10px 0px') {
+                        v.padding = '0px 0px 10px 10px';
+                    }
                     $img.attr({
                         alt: v.alt,
                         width: v.width,
