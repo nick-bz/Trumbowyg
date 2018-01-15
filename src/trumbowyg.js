@@ -576,7 +576,7 @@ jQuery.trumbowyg = {
             t.$ed
                 .on('dblclick', 'img', t.o.imgDblClickHandler)
                 .on('keydown', function (e) {
-                    composition = (e.which === 229);
+                   // composition = (e.which === 229); 222
 
                     if (e.ctrlKey) {
                         ctrl = true;
