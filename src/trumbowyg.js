@@ -1444,7 +1444,7 @@ jQuery.trumbowyg = {
                     $.each(fields, function (fieldName, field) {
                         var $field = $('[name="' + fieldName + '"]', $form);
 
-                        values[fieldName] = $.trim($field.val());
+                        values[fieldName] = field.type === 'checkbox' ? $field.is(':checked') : $.trim($field.val());
 
                         // Validate value
                         if (field.required && values[fieldName] === '') {
