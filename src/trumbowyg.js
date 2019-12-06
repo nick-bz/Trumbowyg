@@ -429,11 +429,14 @@ jQuery.trumbowyg = {
                     if(v.align == 'right' && (v.padding == '0px 10px 10px 0px' || v.padding == '0px' || v.padding == '0' || v.padding == '')) {
                         v.padding = '0px 0px 10px 10px';
                     }
+                    $img.removeAttr('data-large-preview');
+                    if(v.usePreview) {
+                        $img.attr('data-large-preview', v.usePreview);
+                    }
                     $img.attr({
                         alt: v.alt,
                         width: v.width,
-                        align: v.align,
-                        'data-large-preview': v.usePreview
+                        align: v.align
                     }).css('padding', v.padding);
                     return true;
                 });
