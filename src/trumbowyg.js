@@ -412,7 +412,7 @@ jQuery.trumbowyg = {
                     usePreview: {
                         label: t.lang.usePreview,
                         type: 'checkbox',
-                        checked: $img.is('[data-large-preview]')
+                        checked: $img.is('[data-preview]')
                     }
                 }, function (v) {
                     if (v.src !== base64) {
@@ -429,9 +429,9 @@ jQuery.trumbowyg = {
                     if(v.align == 'right' && (v.padding == '0px 10px 10px 0px' || v.padding == '0px' || v.padding == '0' || v.padding == '')) {
                         v.padding = '0px 0px 10px 10px';
                     }
-                    $img.removeAttr('data-large-preview');
+                    $img.removeAttr('data-preview');
                     if(v.usePreview) {
-                        $img.attr('data-large-preview', v.usePreview);
+                        $img.attr('data-preview', v.usePreview);
                     }
                     $img.attr({
                         alt: v.alt,
