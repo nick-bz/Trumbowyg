@@ -40,7 +40,7 @@
     "vinyl-paths": "^3.0.1"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "npm install && gulp build",
     "start": "gulp",
     "test": "gulp test"
   },
