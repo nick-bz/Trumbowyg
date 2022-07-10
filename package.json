@@ -43,5 +43,8 @@
     "build": "gulp build",
     "start": "gulp",
     "test": "gulp test"
+  },
+  "engines": {
+    "node": ">=17.0.0"
   }
 }
